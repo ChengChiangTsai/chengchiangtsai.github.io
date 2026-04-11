@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<style>
+	/* Tooltip container */
+	.tooltip {
+	position: relative;
+	display: inline-block;
+	border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+	}
+	
+	/* Tooltip text */
+	.tooltip .tooltiptext {
+	visibility: hidden;
+	width: 600px;
+	background-color: black;
+	color: #fff;
+	text-align: center;
+	padding: 5px 0;
+	border-radius: 6px;
+	
+	/* Position the tooltip text - see examples below! */
+	position: absolute;
+	z-index: 1;
+	}
+	
+	/* Show the tooltip text when you mouse over the tooltip container */
+	.tooltip:hover .tooltiptext {
+	visibility: visible;
+	}
+</style>
+
+	<style>
+	  .sp {
+	     margin-bottom: 0.2cm;
+	  }
+	</style>
+
+	<style>
+	  .nsp {
+	     margin-bottom: -0.35cm;
+	  }
+	</style>
+	
+	<meta http-equiv="cache-control" content="no-cache" />
+
+	<title>Exercises</title>
+	
+	<h2>Exercises</h2>
+
+	The problems each week will be updated by 9pm on each Tuesday, and is due in class at 1:35pm or so every Tuesday since March 10th. 
+<table border="1">
+	<tr>
+		<td>Due Date</td><td>Sheet</td><td>Remark</td>
+	</tr>
+	<tr>
+		<td>3/10</td><td><a href="exercises/sheet1.pdf">sheet 1</a></td><td>Exercises 1-6</td>
+	</tr>
+	<tr>
+		<td>3/17</td><td><a href="exercises/sheet2.pdf">sheet 2</a></td><td>Exercises 7-8</td>
+	</tr>
+	<tr>
+		<td>3/24</td><td><a href="exercises/sheet3.pdf">sheet 3</a></td><td>Exercises 9-12</td>
+	</tr>
+	<tr>
+		<td>3/31</td><td><a href="exercises/sheet4.pdf">sheet 4</a></td><td>Exercises 13-14</td>
+	</tr>
+	<tr>
+		<td>4/7</td><td><a href="exercises/sheet5.pdf">sheet 5</a></td><td>Exercises 15-16</td>
+	</tr>
+	<tr>
+		<td>4/14</td><td><a href="exercises/sheet6.pdf">sheet 6</a></td><td>Exercises 17-18</td>
+	</tr>
+	<tr>
+		<td>4/21</td><td></td><td></td>
+	</tr>
+	<tr>
+		<td>4/28</td><td></td><td></td>
+	</tr>
+	<tr>
+		<td>5/5</td><td></td><td></td>
+	</tr>
+	<tr>
+		<td>5/12</td><td></td><td></td>
+	</tr>
+	<tr>
+		<td>5/19</td><td></td><td></td>
+	</tr>
+</table>
+
+To receive the standard full grade (i.e. an A) you roughly need to submit one correct (and complete) solution to one exercise in &ge;85% of the weeks, <del>i.e. all but 2</del>. An exercise means a full "Exercise n," e.g. Exercise 4(a)(b) together counts as one.
+See <a href="formula.pdf">formula</a> for a precise formula to determine your grade.<p> 
+
+Here are some <a href="projects.pdf">examples</a> (<span id="file-status">loading...</span>) of potential topics for a project. I should add explanations to these proposals (after which I'll remove this sentence.)
+
+<p>
+<a href="index.html">Back to the homepage</a>. 
+    
+<script>
+  async function updateFileTimestamp(filePath) {
+    const displayElement = document.getElementById('file-status');
+
+    try {
+      // We add '?t=' + Date.now() to the URL to force the browser to get fresh data
+      const cacheBuster = filePath + '?t=' + Date.now();
+      
+      const response = await fetch(cacheBuster, { 
+        method: 'HEAD',
+        cache: 'no-cache' 
+      });
+      
+      if (!response.ok) throw new Error('File not found');
+
+      const lastModHeader = response.headers.get('Last-Modified');
+      if (!lastModHeader) {
+        displayElement.innerText = "update time unavailable";
+        return;
+      }
+
+      const date = new Date(lastModHeader);
+
+      // Formatting logic
+      const timeStr = date.toLocaleString('en-US', { 
+        hour: 'numeric', 
+        minute: '2-digit', 
+        hour12: true 
+      }).toLowerCase().replace(' ', '');
+
+      const monthStr = date.toLocaleString('en-US', { month: 'short' });
+      const day = date.getDate();
+      const year = date.getFullYear();
+      
+      const suffix = (d) => {
+        if (d > 3 && d < 21) return 'th';
+        switch (d % 10) {
+          case 1:  return "st";
+          case 2:  return "nd";
+          case 3:  return "rd";
+          default: return "th";
+        }
+      };
+
+      // Injects the final string into the <span> above
+      displayElement.innerText = `last uploaded at ${timeStr} on ${monthStr}. ${day}${suffix(day)}, ${year}`;
+
+    } catch (error) {
+      console.error(error);
+      displayElement.innerText = "error loading date";
+    }
+  }
+
+  // CHANGE THIS to your actual file name
+  updateFileTimestamp('projects.pdf');
+</script>
+
+</body>    
+</html>

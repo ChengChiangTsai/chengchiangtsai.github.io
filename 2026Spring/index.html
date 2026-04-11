@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<style>
+	/* Tooltip container */
+	.tooltip {
+	position: relative;
+	display: inline-block;
+	border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+	}
+	
+	/* Tooltip text */
+	.tooltip .tooltiptext {
+	visibility: hidden;
+	width: 600px;
+	background-color: black;
+	color: #fff;
+	text-align: center;
+	padding: 5px 0;
+	border-radius: 6px;
+	
+	/* Position the tooltip text - see examples below! */
+	position: absolute;
+	z-index: 1;
+	}
+	
+	/* Show the tooltip text when you mouse over the tooltip container */
+	.tooltip:hover .tooltiptext {
+	visibility: visible;
+	}
+</style>
+
+	<style>
+	  .sp {
+	     margin-bottom: 0.2cm;
+	  }
+	</style>
+
+	<style>
+	  .nsp {
+	     margin-bottom: -0.35cm;
+	  }
+	</style>
+	
+	<meta http-equiv="cache-control" content="no-cache" />
+
+	<title>Characters of p-adic groups (2026 Spring)</title>
+	
+	<h2>Characters of p-adic groups (2026 Spring)</h2>
+
+    <b>Time:</b> Tuesday 1:30pm-4pm (Taiwan time), Feb. 24th to May 19th.
+	<br><b>Venue:</b> Room 509, Cosmology Building, NTU.
+	<br><b>Link:</b> This is a <a href="https://us02web.zoom.us/j/86296338237?pwd=lxvVZ3pClz7HHssrNb547kURwouWGm.1">link</a> to the remote broadcasting. We thank NCTS for setting it up.
+
+    <p><b>Instructor:</b> Cheng-Chiang Tsai
+    <br><b>email:</b> chengchiangtsai@gmail.com or chchtsai@as.edu.tw
+    <br><b>Office Hour:</b> 10am-11:30am every Wednesday @ Room 629, Astro-Math building, NTU, jointly with the <a href="https://masaooi.github.io/2026Spring.html">course</a> by Prof. Masao Oi.
+    <p>
+
+Here is the <a href="Characters_of_p_adic_groups__2026_Spring_.pdf" onclick="this.href='Characters_of_p_adic_groups__2026_Spring_.pdf?v='+Date.now();">course note</a> (<span id="file-status">loading...</span>) and the <a href="syllabus__2026_Spring_.pdf">syllabus</a>. Here is the list of <a href="exercises.html">exercises</a>.
+
+<p>
+<table border="1">
+	<tr>
+		<td>Date</td><td>Topic</td><td>Remark</td>
+	</tr>
+	<tr>
+		<td>2/24</td><td>Introduction</td><td>&sect;1</td>
+	</tr>
+	<tr>
+		<td>3/3</td><td>Review on basics</td><td>&sect;2-1~&sect;2-6</td>
+	</tr>
+	<tr>
+		<td>3/10</td><td>log/exp, orbital integrals</td><td>&sect;2-7, &sect;3-1~&sect;3-3</td>
+	</tr>
+	<tr>
+		<td>3/17</td><td>coinvariant, nilpotent orbital integrals</td><td>&sect;3-3~&sect;3-5, quiz (<a href="quiz_sample.pdf">sample</a>/<a href="quiz1.pdf">actual</a>)</td>
+	</tr>
+	<tr>
+		<td>3/24</td><td>Fourier transform, local character expansion, unimodularity</td><td>&sect;3-6, &sect;4, &sect;5-1</td>
+	</tr>
+	<tr>
+		<td>3/31</td><td>Semisimple descent</td><td>&sect;5-2~5-4</td>
+	</tr>
+	<tr>
+		<td>4/7</td><td>Local integrability</td><td>&sect;2-8, &sect;5-4, &sect;6-1~6-3</td>
+	</tr>
+	<tr>
+		<td>4/14</td><td>Local integrability, continued</td><td>(planned)&sect;6-3~6-7</td>
+	</tr>
+	<tr>
+		<td>4/21</td><td></td><td></td>
+	</tr>
+	<tr>
+		<td>4/28</td><td></td><td></td>
+	</tr>
+	<tr>
+		<td>5/5</td><td></td><td></td>
+	</tr>
+	<tr>
+		<td>5/12</td><td></td><td></td>
+	</tr>
+	<tr>
+		<td>5/19</td><td></td><td></td>
+	</tr>
+</table>
+
+<br>Major changes:
+<ul>
+  <li>Section numbers were re-organized on March 30th; previous &sect;3 became &sect;5 and was expanded. Previous &sect;4 and &sect;5 became the current &sect;3 and &sect;4.</li>
+  <li>&sect;2.8 about measures, distributions and generalization functions were added on Apr. 5th; some scattered contents were moved there.</li>
+</ul>
+<br>
+Advertisement for an <a href="https://sites.google.com/view/langlandsprogrammelmssheffield/home">activity in Sheffield</a>, UK from July 7th to 17th.
+<br>
+<img src="Sheffield.jpg" width="500" height="700"> 
+
+<script>
+  async function updateFileTimestamp(filePath) {
+    const displayElement = document.getElementById('file-status');
+
+    try {
+      // We add '?t=' + Date.now() to the URL to force the browser to get fresh data
+      const cacheBuster = filePath + '?t=' + Date.now();
+      
+      const response = await fetch(cacheBuster, { 
+        method: 'HEAD',
+        cache: 'no-cache' 
+      });
+      
+      if (!response.ok) throw new Error('File not found');
+
+      const lastModHeader = response.headers.get('Last-Modified');
+      if (!lastModHeader) {
+        displayElement.innerText = "update time unavailable";
+        return;
+      }
+
+      const date = new Date(lastModHeader);
+
+      // Formatting logic
+      const timeStr = date.toLocaleString('en-US', { 
+        hour: 'numeric', 
+        minute: '2-digit', 
+        hour12: true 
+      }).toLowerCase().replace(' ', '');
+
+      const monthStr = date.toLocaleString('en-US', { month: 'short' });
+      const day = date.getDate();
+      const year = date.getFullYear();
+      
+      const suffix = (d) => {
+        if (d > 3 && d < 21) return 'th';
+        switch (d % 10) {
+          case 1:  return "st";
+          case 2:  return "nd";
+          case 3:  return "rd";
+          default: return "th";
+        }
+      };
+
+      // Injects the final string into the <span> above
+      displayElement.innerText = `last uploaded at ${timeStr} on ${monthStr}. ${day}${suffix(day)}, ${year}`;
+
+    } catch (error) {
+      console.error(error);
+      displayElement.innerText = "error loading date";
+    }
+  }
+
+  // CHANGE THIS to your actual file name
+  updateFileTimestamp('Characters_of_p_adic_groups__2026_Spring_.pdf');
+</script>
+
+
+	
+</body>    
+</html>
