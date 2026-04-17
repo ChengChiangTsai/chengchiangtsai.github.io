@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Random Slot Picker</title>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --border: #d1d5db;
+      --accent: #2563eb;
+      --accent-hover: #1d4ed8;
+      --danger: #dc2626;
+      --danger-hover: #b91c1c;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      min-height: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans", "PingFang TC", "Microsoft JhengHei", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      padding-bottom: calc(290px + env(safe-area-inset-bottom));
+    }
+
+    .display-area {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 24px;
+    }
+
+    .display-card {
+      width: min(92vw, 900px);
+      min-height: 220px;
+      background: var(--card);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      padding: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(209, 213, 219, 0.7);
+    }
+
+    #result {
+      font-size: clamp(2rem, 7vw, 4.5rem);
+      line-height: 1.25;
+      font-weight: 700;
+      word-break: break-word;
+      white-space: pre-wrap;
+    }
+
+    .placeholder {
+      color: var(--muted);
+      font-weight: 500;
+      font-size: clamp(1.1rem, 4vw, 1.8rem);
+    }
+
+    .bottom-panel {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(209, 213, 219, 0.9);
+      box-shadow: 0 -6px 24px rgba(0, 0, 0, 0.06);
+      padding: 14px 14px calc(14px + env(safe-area-inset-bottom));
+    }
+
+    .controls-wrap {
+      width: min(980px, 100%);
+      margin: 0 auto;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    button {
+      appearance: none;
+      border: none;
+      border-radius: 14px;
+      padding: 12px 16px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.08s ease, opacity 0.15s ease, background 0.15s ease;
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    .primary {
+      background: var(--accent);
+      color: white;
+      flex: 1 1 180px;
+    }
+
+    .primary:hover {
+      background: var(--accent-hover);
+    }
+
+    .secondary {
+      background: #e5e7eb;
+      color: var(--text);
+    }
+
+    .secondary:hover {
+      background: #d1d5db;
+    }
+
+    .danger {
+      background: #fee2e2;
+      color: var(--danger);
+    }
+
+    .danger:hover {
+      background: #fecaca;
+      color: var(--danger-hover);
+    }
+
+    .slot-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-height: 190px;
+      overflow-y: auto;
+      padding-right: 2px;
+    }
+
+    .slot-row {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .slot-input {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: white;
+      padding: 12px 14px;
+      font-size: 1rem;
+      color: var(--text);
+    }
+
+    .slot-input:focus {
+      outline: 2px solid rgba(37, 99, 235, 0.2);
+      border-color: var(--accent);
+    }
+
+    .tiny {
+      min-width: 54px;
+      padding: 12px 12px;
+    }
+
+    .hint {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      text-align: center;
+    }
+
+    @media (max-width: 640px) {
+      body {
+        padding-bottom: calc(340px + env(safe-area-inset-bottom));
+      }
+
+      .display-card {
+        min-height: 180px;
+        padding: 22px;
+      }
+
+      .slot-row {
+        grid-template-columns: 1fr auto auto;
+      }
+
+      .tiny {
+        min-width: 48px;
+        font-size: 0.95rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="display-area">
+    <section class="display-card" aria-live="polite">
+      <div id="result" class="placeholder">Tap the button below to show a random slot.</div>
+    </section>
+  </main>
+
+  <section class="bottom-panel">
+    <div class="controls-wrap">
+      <div class="actions">
+        <button id="pickButton" class="primary">Show Random Slot</button>
+        <button id="addButton" class="secondary">Add Slot</button>
+        <button id="clearSavedButton" class="secondary">Clear Saved Data</button>
+      </div>
+
+      <div id="slotList" class="slot-list"></div>
+      <div class="hint">Your slots are automatically saved on this device/browser using local storage. Empty slots are ignored.</div>
+    </div>
+  </section>
+
+  <script>
+    const STORAGE_KEY = 'random-slot-picker-slots';
+    const defaultSlots = ['蘋果', '香蕉', '今天加油'];
+
+    let slots = loadSlots();
+    const slotList = document.getElementById('slotList');
+    const result = document.getElementById('result');
+    const pickButton = document.getElementById('pickButton');
+    const addButton = document.getElementById('addButton');
+    const clearSavedButton = document.getElementById('clearSavedButton');
+
+    function loadSlots() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (!saved) return [...defaultSlots];
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed.map(v => typeof v === 'string' ? v : '');
+        }
+      } catch (e) {
+        console.error('Could not load saved slots:', e);
+      }
+      return [...defaultSlots];
+    }
+
+    function saveSlots() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(slots));
+    }
+
+    function renderSlots() {
+      slotList.innerHTML = '';
+
+      slots.forEach((value, index) => {
+        const row = document.createElement('div');
+        row.className = 'slot-row';
+
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.className = 'slot-input';
+        input.placeholder = `Slot ${index + 1}`;
+        input.value = value;
+        input.setAttribute('aria-label', `Slot ${index + 1}`);
+        input.addEventListener('input', (e) => {
+          slots[index] = e.target.value;
+          saveSlots();
+        });
+
+        const duplicateBtn = document.createElement('button');
+        duplicateBtn.className = 'secondary tiny';
+        duplicateBtn.textContent = '⧉';
+        duplicateBtn.title = 'Duplicate this slot';
+        duplicateBtn.setAttribute('aria-label', `Duplicate slot ${index + 1}`);
+        duplicateBtn.addEventListener('click', () => {
+          slots.splice(index + 1, 0, slots[index]);
+          saveSlots();
+          renderSlots();
+        });
+
+        const deleteBtn = document.createElement('button');
+        deleteBtn.className = 'danger tiny';
+        deleteBtn.textContent = '✕';
+        deleteBtn.title = 'Delete this slot';
+        deleteBtn.setAttribute('aria-label', `Delete slot ${index + 1}`);
+        deleteBtn.disabled = slots.length === 1;
+        deleteBtn.style.opacity = slots.length === 1 ? '0.5' : '1';
+        deleteBtn.style.cursor = slots.length === 1 ? 'not-allowed' : 'pointer';
+        deleteBtn.addEventListener('click', () => {
+          if (slots.length === 1) return;
+          slots.splice(index, 1);
+          saveSlots();
+          renderSlots();
+        });
+
+        row.appendChild(input);
+        row.appendChild(duplicateBtn);
+        row.appendChild(deleteBtn);
+        slotList.appendChild(row);
+      });
+    }
+
+    function addSlot() {
+      slots.push('');
+      saveSlots();
+      renderSlots();
+      const lastInput = slotList.querySelector('.slot-row:last-child .slot-input');
+      if (lastInput) lastInput.focus();
+    }
+
+    function pickRandomSlot() {
+      const nonEmpty = slots.map(s => s.trim()).filter(Boolean);
+      if (nonEmpty.length === 0) {
+        result.textContent = 'Please enter at least one non-empty slot.';
+        result.className = 'placeholder';
+        return;
+      }
+
+      const randomIndex = Math.floor(Math.random() * nonEmpty.length);
+      result.textContent = nonEmpty[randomIndex];
+      result.className = '';
+    }
+
+    function clearSavedData() {
+      localStorage.removeItem(STORAGE_KEY);
+      slots = [...defaultSlots];
+      saveSlots();
+      renderSlots();
+      result.textContent = 'Saved data cleared.';
+      result.className = 'placeholder';
+    }
+
+    addButton.addEventListener('click', addSlot);
+    clearSavedButton.addEventListener('click', clearSavedData);
+    pickButton.addEventListener('click', pickRandomSlot);
+
+    renderSlots();
+  </script>
+</body>
+</html>
